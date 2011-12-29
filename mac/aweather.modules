@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE moduleset SYSTEM "moduleset.dtd">
+<?xml-stylesheet type="text/xsl" href="moduleset.xsl"?>
+<moduleset>
+	<include href="http://git.gnome.org/browse/gtk-osx/plain/modulesets-stable/gtk-osx.modules"/>
+	<repository type="git" name="lug.rose-hulman.edu" default="yes" href="git://lug.rose-hulman.edu/"/>
+	<autotools id="rsl">
+		<branch module="~spenceal/rsl" checkoutdir="rsl" revision="aweather" />
+	</autotools>
+	<autotools id="grits" autogenargs="--enable-relative" makeinstallargs="DESTDIR=${PREFIX}">
+		<branch module="proj/grits" checkoutdir="grits" revision="mac" />
+		<dependencies>
+			<dep package="gtk+"/>
+			<dep package="libsoup"/>
+		</dependencies>
+	</autotools>
+	<autotools id="aweather" autogenargs="--enable-relative" makeinstallargs="DESTDIR=${PREFIX}">
+		<branch module="proj/aweather" checkoutdir="aweather" revision="mac" />
+		<dependencies>
+			<dep package="rsl"/>
+			<dep package="grits"/>
+		</dependencies>
+	</autotools>
+</moduleset>
