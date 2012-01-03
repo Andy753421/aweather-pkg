@@ -17,9 +17,11 @@
 	<binary>${prefix}/bin/xdg-open</binary>
 	<binary>${prefix}/lib/aweather/*.so</binary>
 	<binary>${prefix}/lib/grits2/*.so</binary>
+	<binary>${prefix}/lib/libgrits*</binary>
+	<binary>${prefix}/lib/librsl*</binary>
 	<data>${prefix}/share/aweather</data>
 	<data>${prefix}/share/doc/aweather</data>
-	<data>${prefix}/share/rsl/*.dat</data>
+	<data>${prefix}/share/rsl1/*.dat</data>
 	<data>${prefix}/share/icons/hicolor/16x16/apps/aweather.png</data>
 	<data>${prefix}/share/icons/hicolor/22x22/apps/aweather.png</data>
 	<data>${prefix}/share/icons/hicolor/24x24/apps/aweather.png</data>
@@ -35,7 +37,7 @@
 
 	<data>${prefix}/share/themes/Clearlooks</data>
 	<data>${prefix}/share/themes/Default</data>
-	<data>${prefix}/share/themes/Mac</data>
-	<data>${prefix}/share/themes/Quartz</data>
+	<!-- <data>${prefix}/share/themes/Mac</data> -->
+	<!-- <data>${prefix}/share/themes/Quartz</data> -->
 	<data dest="${bundle}/Contents/Resources/etc/${gtkdir}/gtkrc">${project}/aweather.gtkrc</data>
 </app-bundle>

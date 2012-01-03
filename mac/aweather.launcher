@@ -14,7 +14,7 @@ export GTK_PATH="$PREFIX"
 export GTK2_RC_FILES="$PREFIX/etc/gtk-2.0/gtkrc"
 export GTK_IM_MODULE_FILE="$PREFIX/etc/gtk-2.0/gtk.immodules"
 export GDK_PIXBUF_MODULE_FILE="$PREFIX/etc/gtk-2.0/gdk-pixbuf.loaders"
-export PANGO_RC_FILE="$PREFIX/etc/pango/pangorc"
+#export PANGO_RC_FILE="$PREFIX/etc/pango/pangorc"
 
 export PATH="$PATH:$PREFIX/bin"
 

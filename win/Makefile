@@ -32,9 +32,9 @@ $(INSTALLERS): $(DESTDIR)
 aweather-gen:
 	cd $(WIN_AWEATHER); \
 	PKG_CONFIG_PATH="$(WIN_GRITS)" \
-	LIBS="-L$(WIN_GRITS)"\
-	CPPFLAGS="-I$(WIN_GRITS)"\
-	CFLAGS="-g -Werror -Wno-unused -O3"\
+	LIBS="-L$(WIN_GRITS)" \
+	CPPFLAGS="-I$(WIN_GRITS)" \
+	CFLAGS="-g -Werror -Wno-unused -O3" \
 	./autogen.sh \
 		--enable-shared \
 		--disable-static \
@@ -47,3 +47,12 @@ grits-gen:
 		--disable-static \
 		--host=i686-pc-mingw32 \
 		CFLAGS="-g -Werror -Wno-unused -O3"
+
+rsl-gen:
+	cd $(WIN_RSL); \
+	./autogen.sh \
+		--enable-relative \
+		--enable-shared \
+		--disable-static \
+		--host=i686-pc-mingw32 \
+		CFLAGS="-g -Wall -Wno-unused -O3"
