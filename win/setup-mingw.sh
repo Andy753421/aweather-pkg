@@ -37,6 +37,7 @@ extract -bx  /scratch/aweather/local/extern/libsoup_2.26.3-1_win32.zip
 extract -dx  /scratch/aweather/local/extern/libsoup-dev_2.26.3-1_win32.zip
 extract -bx  /scratch/aweather/local/extern/bzip2-1.0.5-bin.zip
 extract -dx  /scratch/aweather/local/extern/bzip2-1.0.5-lib.zip
+#extract -dx  /scratch/aweather/local/extern/freeglut-MinGW-2.8.0-1.mp.zip
 
 # Cleanup install folders
 rm  -f $DEV/lib/*.la
@@ -59,9 +60,9 @@ find "$BIN" -type d -delete 2>/dev/null
 cp /usr/lib/pkgconfig/libxml-2.0.pc $DEV/lib/pkgconfig
 rename libxml2.dll libxml2-2.dll {$DEV,$BIN}/bin/*
 
-i686-pc-mingw32-gcc -Wall -mwindows -o $BIN/bin/xdg-open.exe mingw/xdg-open.c
-cp mingw/gtkrc $BIN/etc/gtk-2.0/gtkrc
-cp mingw/pango.aliases $BIN/etc/pango/pango.aliases
+i686-pc-mingw32-gcc -Wall -mwindows -o $BIN/bin/xdg-open.exe xdg-open.c
+cp gtkrc $BIN/etc/gtk-2.0/gtkrc
+cp pango.aliases $BIN/etc/pango/pango.aliases
 
 # Fix pkg-config
 sed -i 's!^prefix=.*!prefix=/usr/i686-pc-mingw32!' \

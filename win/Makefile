@@ -11,7 +11,7 @@ all: $(INSTALLERS)
 
 clean:
 	@echo clean-win
-	rm -f $(INSTALLERS)
+	rm -rf $(INSTALLERS) $(DESTDIR)
 
 $(DESTDIR):
 	make -C $(WIN_AWEATHER) install
@@ -19,23 +19,23 @@ $(DESTDIR):
 	make -C $(WIN_RSL)      install
 	find $(DESTDIR) -name '*.a'  -delete
 	find $(DESTDIR) -name '*.la' -delete
-	rm -rf $(DESTDIR)/share/rsl/colors
+	rm -rf $(DESTDIR)/share/rsl1/colors
 	rm -rf $(DESTDIR)/include
 	touch $@
 
 $(INSTALLERS): $(DESTDIR)
-	cd $(WIN_AWEATHER); \
-	makensis -DVERSION=$(VER_AWEATHER) aweather.nsi; \
-	makensis -DVERSION=$(VER_AWEATHER) -DUSE_GTK aweather.nsi
+	makensis -DROOT=$(WIN_AWEATHER) -DVERSION=$(VER_AWEATHER) aweather.nsi; \
+	makensis -DROOT=$(WIN_AWEATHER) -DVERSION=$(VER_AWEATHER) -DUSE_GTK aweather.nsi
 	cp $(WIN_AWEATHER)/aweather-$(VERSION)*.exe $(FILES)
 
 aweather-gen:
 	cd $(WIN_AWEATHER); \
-	PKG_CONFIG_PATH="$(WIN_GRITS)" \
-	LIBS="-L$(WIN_GRITS)" \
-	CPPFLAGS="-I$(WIN_GRITS)" \
+	PKG_CONFIG_PATH="$(WIN_GRITS)/src" \
+	CPPFLAGS="-I$(WIN_GRITS)/include/grits" \
+	LIBS="-L$(WIN_GRITS)/src/.libs" \
 	CFLAGS="-g -Werror -Wno-unused -O3" \
 	./autogen.sh \
+		--enable-relative \
 		--enable-shared \
 		--disable-static \
 		--host=i686-pc-mingw32
@@ -43,6 +43,7 @@ aweather-gen:
 grits-gen:
 	cd $(WIN_GRITS); \
 	./autogen.sh \
+		--enable-relative \
 		--enable-shared \
 		--disable-static \
 		--host=i686-pc-mingw32 \

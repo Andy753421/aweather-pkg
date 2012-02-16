@@ -19,9 +19,9 @@ Name "AWeather"
 	!define VERSION LATEST
 !endif
 !ifdef USE_GTK
-	OutFile "aweather-${VERSION}-gtk.exe"
+	OutFile "${ROOT}/aweather-${VERSION}-gtk.exe"
 !else
-	OutFile "aweather-${VERSION}.exe"
+	OutFile "${ROOT}/aweather-${VERSION}.exe"
 !endif
 InstallDir AWeather
 Icon "${ROOT}/data/icons/48x48/aweather.ico"
@@ -43,9 +43,9 @@ Section "AWeather (required)" SecAWeather
 	SectionIn RO
 
 	SetOutPath $INSTDIR
-	File /r build/*
+	File /r ${ROOT}/build/*
 	!ifdef USE_GTK
-		file /r gtk/*
+		file /r ${ROOT}/gtk/*
 	!endif
 	
 	StrCmp $MultiUser.InstallMode "AllUsers" 0 +4
