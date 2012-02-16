@@ -24,6 +24,7 @@ aweather-gen:
 	cd $(SRC_AWEATHER); \
 	PKG_CONFIG_PATH="$(SRC_GRITS)/src" \
 	./autogen.sh \
+		--enable-gps \
 		--datadir="$(SRC_AWEATHER)/data" \
 		--libdir="$(SRC_AWEATHER)/src/plugins" \
 		CFLAGS="-g -Werror $(CFLAGS)"

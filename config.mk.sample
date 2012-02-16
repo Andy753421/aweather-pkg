@@ -1,7 +1,7 @@
 FILES        = /scratch/aweather-pkg/files
 
-VER_AWEATHER = 0.6.1
-VER_GRITS    = 0.6.2
+VER_AWEATHER = 0.7
+VER_GRITS    = 0.7
 VER_RSL      = 1.42
 
 SRC_AWEATHER = /scratch/aweather
