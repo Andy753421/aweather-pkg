@@ -28,10 +28,10 @@ $(DESTDIR): $(MAC_AWEATHER)/src/aweather \
 $(MAC_AWEATHER)/src/aweather: \
 		$(MAC_GRITS)/src/libgrits.la \
 		$(MAC_RSL)/src/librsl.la
-	jhbuild run make -C $(MAC_AWEATHER)
+	jhbuild run make -C $(MAC_AWEATHER) -j3
 
 $(MAC_GRITS)/src/libgrits.la:
-	jhbuild run make -C $(MAC_GRITS)
+	jhbuild run make -C $(MAC_GRITS) -j3
 
 $(MAC_RSL)/src/librsl.la:
 	jhbuild run make -C $(MAC_RSL)

@@ -16,7 +16,7 @@
 	<binary>${prefix}/bin/grits-demo</binary>
 	<binary>${prefix}/bin/xdg-open</binary>
 	<binary>${prefix}/lib/aweather/*.so</binary>
-	<binary>${prefix}/lib/grits2/*.so</binary>
+	<binary>${prefix}/lib/grits4/*.so</binary>
 	<binary>${prefix}/lib/libgrits*</binary>
 	<binary>${prefix}/lib/librsl*</binary>
 	<data>${prefix}/share/aweather</data>
