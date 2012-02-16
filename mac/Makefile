@@ -49,7 +49,7 @@ aweather-gen:
 	cd $(MAC_AWEATHER); \
 	PKG_CONFIG_PATH="$(MAC_GRITS)/src" \
 	LDFLAGS="-L$(MAC_GRITS)/src/.libs" \
-	CPPFLAGS=dir="-I$(MAC_GRITS)/include" \
+	CPPFLAGS="-I$(MAC_GRITS)/include/grits" \
 	jhbuild run ./autogen.sh \
 		--enable-relative \
 		--enable-shared \
