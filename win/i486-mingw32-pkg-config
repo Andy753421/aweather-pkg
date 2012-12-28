@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export PKG_CONFIG_LIBDIR=/usr/i486-mingw32/lib/pkgconfig
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH//\/usr*/}"
+export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/i486-mingw32/lib/pkgconfig"
+export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/i486-mingw32/usr/lib/pkgconfig"
+pkg-config "$@"

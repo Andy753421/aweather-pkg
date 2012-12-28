@@ -23,21 +23,23 @@ function extract {
 }
 
 # Install locations
-DEV=/usr/i686-pc-mingw32-2.24
+MINGW=i486-mingw32
+DEV=/usr/$MINGW/usr
 BIN=/scratch/aweather-win32/local/gtk/gtk-2.24
+EXT=/home/andy/b/scratch/aweather/local/extern
 
 # Copy clean folder
-rsync -a /usr/i686-pc-mingw32-clean/ "$DEV/"
+rsync -a /usr/$MINGW-clean/ "$DEV/"
 
 # Extract packages
-extract -bdx /scratch/aweather/local/extern/gtk+-bundle_2.24.8-20111122_win32.zip
-extract -bd  /scratch/aweather/local/extern/iconv-1.9.2.win32.zip
-extract -bd  /scratch/aweather/local/extern/libxml2-2.7.6.win32.zip
-extract -bx  /scratch/aweather/local/extern/libsoup_2.26.3-1_win32.zip
-extract -dx  /scratch/aweather/local/extern/libsoup-dev_2.26.3-1_win32.zip
-extract -bx  /scratch/aweather/local/extern/bzip2-1.0.5-bin.zip
-extract -dx  /scratch/aweather/local/extern/bzip2-1.0.5-lib.zip
-#extract -dx  /scratch/aweather/local/extern/freeglut-MinGW-2.8.0-1.mp.zip
+extract -bdx $EXT/gtk+-bundle_2.24.8-20111122_win32.zip
+extract -bd  $EXT/iconv-1.9.2.win32.zip
+extract -bd  $EXT/libxml2-2.7.6.win32.zip
+extract -bx  $EXT/libsoup_2.26.3-1_win32.zip
+extract -dx  $EXT/libsoup-dev_2.26.3-1_win32.zip
+extract -bx  $EXT/bzip2-1.0.5-bin.zip
+extract -dx  $EXT/bzip2-1.0.5-lib.zip
+extract -dx  $EXT/freeglut-MinGW-2.8.0-1.mp.zip
 
 # Cleanup install folders
 rm  -f $DEV/lib/*.la
@@ -60,15 +62,15 @@ find "$BIN" -type d -delete 2>/dev/null
 cp /usr/lib/pkgconfig/libxml-2.0.pc $DEV/lib/pkgconfig
 rename libxml2.dll libxml2-2.dll {$DEV,$BIN}/bin/*
 
-i686-pc-mingw32-gcc -Wall -mwindows -o $BIN/bin/xdg-open.exe xdg-open.c
+$MINGW-gcc -Wall -mwindows -o $BIN/bin/xdg-open.exe xdg-open.c
 cp gtkrc $BIN/etc/gtk-2.0/gtkrc
 cp pango.aliases $BIN/etc/pango/pango.aliases
 
 # Fix pkg-config
-sed -i 's!^prefix=.*!prefix=/usr/i686-pc-mingw32!' \
+sed -i 's!^prefix=.*!prefix=/usr/'$MINGW'/usr!' \
 	$DEV/lib/pkgconfig/*.pc
 
 # Install custom programs
-#   grits    - DESTDIR=/usr/i686-pc-mingw32 make install
-#   rsl      - DESTDIR=/usr/i686-pc-mingw32 make install
-#   aweather - DESTDIR=/usr/i686-pc-mingw32 make install
+#   grits    - DESTDIR=/usr/$MINGW make install
+#   rsl      - DESTDIR=/usr/$MINGW make install
+#   aweather - DESTDIR=/usr/$MINGW make install

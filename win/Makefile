@@ -38,7 +38,7 @@ aweather-gen:
 		--enable-relative \
 		--enable-shared \
 		--disable-static \
-		--host=i686-pc-mingw32
+		--host=mingw32
 
 grits-gen:
 	cd $(WIN_GRITS); \
@@ -46,7 +46,7 @@ grits-gen:
 		--enable-relative \
 		--enable-shared \
 		--disable-static \
-		--host=i686-pc-mingw32 \
+		--host=mingw32 \
 		CFLAGS="-g -Werror -Wno-unused -O3"
 
 rsl-gen:
@@ -55,5 +55,5 @@ rsl-gen:
 		--enable-relative \
 		--enable-shared \
 		--disable-static \
-		--host=i686-pc-mingw32 \
+		--host=mingw32 \
 		CFLAGS="-g -Wall -Wno-unused -O3"

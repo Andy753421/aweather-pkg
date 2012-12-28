@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export PKG_CONFIG_LIBDIR=/usr/mingw32/lib/pkgconfig
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH//\/usr*/}"
+export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/mingw32/lib/pkgconfig"
+pkg-config "$@"
