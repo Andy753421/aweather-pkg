@@ -6,12 +6,13 @@
 		<image></image>
 		<run-install-name-tool/>
 		<launcher-script>${project}/aweather.launcher</launcher-script>
-		<gtk>gtk+-2.0</gtk>
+		<gtk>gtk+-3.0</gtk>
 	</meta>
 
 	<plist>${project}/aweather.plist</plist>
 	<main-binary>${prefix}/bin/aweather</main-binary>
 
+	<!-- AWeather files -->
 	<binary>${prefix}/bin/wsr88ddec</binary>
 	<binary>${prefix}/bin/grits-demo</binary>
 	<binary>${prefix}/bin/xdg-open</binary>
@@ -30,14 +31,24 @@
 	<data>${prefix}/share/icons/hicolor/scalable/apps/aweather.svg</data>
 	<data dest="${bundle}/Contents/Resources">${project}/aweather.icns</data>
 
-	<binary>${prefix}/lib/${gtkdir}/modules/*.so</binary>
-	<binary>${prefix}/lib/${gtkdir}/${pkg:${gtk}:gtk_binary_version}/engines/*.so</binary>
+	<!-- GTK files -->
+	<binary>${prefix}/lib/${gtkdir}/${pkg:${gtk}:gtk_binary_version}/theming-engines/*.so</binary>
 	<binary>${prefix}/lib/${gtkdir}/${pkg:${gtk}:gtk_binary_version}/printbackends/*.so</binary>
-	<binary>${prefix}/lib/gdk-pixbuf-2.0/${pkg:${gtk}:gtk_binary_version}/loaders/*.so</binary>
+	<binary>${prefix}/lib/gdk-pixbuf-2.0/2.10.0/loaders/*.so</binary>
 
-	<data>${prefix}/share/themes/Clearlooks</data>
-	<data>${prefix}/share/themes/Default</data>
+	<!-- Themes -->
+	<data>${prefix}/share/themes/Adwaita</data>
+	<!-- <data>${prefix}/share/themes/Clearlooks</data> -->
+	<!-- <data>${prefix}/share/themes/Default</data> -->
 	<!-- <data>${prefix}/share/themes/Mac</data> -->
 	<!-- <data>${prefix}/share/themes/Quartz</data> -->
+
+	<!-- This fixes pango -->
+	<!-- The bundler tries to put files in /etc/pango/*, but it fails, so we use our own path -->
+	<data dest="${bundle}/Contents/Resources/etc/pango.modules">${project}/aweather.pangomodules</data>
+	<data dest="${bundle}/Contents/Resources/etc/pangorc">${project}/aweather.pangorc</data>
+	<binary dest="${bundle}/Contents/Resources/lib/">${prefix}/lib/pango/${pkg:pango:pango_module_version}/modules/*.so</binary>
+
+	<!-- Custom stuff -->
 	<data dest="${bundle}/Contents/Resources/etc/${gtkdir}/gtkrc">${project}/aweather.gtkrc</data>
 </app-bundle>

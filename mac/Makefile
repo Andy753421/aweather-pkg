@@ -13,6 +13,15 @@ clean:
 	rm -rf $(PACKAGES) $(SRCDMG) \
 		$(DESTDIR) $(MAC_AWEATHER)/AWeather.app
 
+$(PACKAGES): $(DESTDIR)
+	rm -f $(SRCDMG)
+	ln -sf /usr/bin/open $(GTKINST)/bin/xdg-open
+	rsync -uav $(DESTDIR)/ $(GTKINST)/
+	jhbuild run gtk-mac-bundler aweather.bundle
+	create-dmg --volname 'AWeather-$(VER_AWEATHER)' \
+		$(SRCDMG) $(MAC_AWEATHER)/AWeather.app
+	cp $(SRCDMG) $(FILES)
+
 $(DESTDIR): $(MAC_AWEATHER)/src/aweather \
             $(MAC_GRITS)/src/libgrits.la \
             $(MAC_RSL)/src/librsl.la
@@ -25,31 +34,22 @@ $(DESTDIR): $(MAC_AWEATHER)/src/aweather \
 	rm -rf $(DESTDIR)/include
 	touch $@
 
-$(MAC_AWEATHER)/src/aweather: \
+aweather-build $(MAC_AWEATHER)/src/aweather: \
 		$(MAC_GRITS)/src/libgrits.la \
 		$(MAC_RSL)/src/librsl.la
-	jhbuild run make -C $(MAC_AWEATHER) -j3
+	jhbuild run make -C $(MAC_AWEATHER) -j8
 
-$(MAC_GRITS)/src/libgrits.la:
-	jhbuild run make -C $(MAC_GRITS) -j3
+grits-build $(MAC_GRITS)/src/libgrits.la:
+	jhbuild run make -C $(MAC_GRITS) -j8
 
-$(MAC_RSL)/src/librsl.la:
+rsl-build $(MAC_RSL)/src/librsl.la:
 	jhbuild run make -C $(MAC_RSL)
-
-$(PACKAGES): $(DESTDIR)
-	rm -f $(SRCDMG)
-	ln -sf /usr/bin/open $(GTKINST)/bin/xdg-open
-	rsync -uav $(DESTDIR)/ $(GTKINST)/
-	jhbuild run gtk-mac-bundler aweather.bundle
-	create-dmg --volname 'AWeather-$(VER_AWEATHER)' \
-		$(SRCDMG) $(MAC_AWEATHER)/AWeather.app
-	cp $(SRCDMG) $(FILES)
 
 aweather-gen:
 	cd $(MAC_AWEATHER); \
 	PKG_CONFIG_PATH="$(MAC_GRITS)/src" \
-	LDFLAGS="-L$(MAC_GRITS)/src/.libs" \
-	CPPFLAGS="-I$(MAC_GRITS)/include/grits" \
+	LDFLAGS="-L$(MAC_GRITS)/src/.libs -L$(MAC_RSL)/src/.libs" \
+	CPPFLAGS="-I$(MAC_GRITS)/include/grits -I$(MAC_RSL)/src" \
 	jhbuild run ./autogen.sh \
 		--enable-relative \
 		--enable-shared \
