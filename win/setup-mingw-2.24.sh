@@ -22,24 +22,53 @@ function extract {
 	rm -rf "$tmp"
 }
 
-# Install locations
-MINGW=i486-mingw32
-DEV=/usr/$MINGW/usr
-BIN=/scratch/aweather-win32/local/gtk/gtk-2.24
-EXT=/home/andy/b/scratch/aweather/local/extern
+# Install custom programs
+#   grits    - DESTDIR=/usr/$MINGW make install
+#   rsl      - DESTDIR=/usr/$MINGW make install
+#   aweather - DESTDIR=/usr/$MINGW make install
 
-# Copy clean folder
-rsync -a /usr/$MINGW-clean/ "$DEV/"
+# Download locations
+GTK2_URI='http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.24/gtk+-bundle_2.24.10-20120208_win32.zip'
+SOUP_BIN='http://ftp.gnome.org/pub/gnome/binaries/win32/libsoup/2.26/libsoup_2.26.3-1_win32.zip'
+SOUP_DEV='http://ftp.gnome.org/pub/gnome/binaries/win32/libsoup/2.26/libsoup-dev_2.26.3-1_win32.zip'
+BZIP_BIN='http://downloads.sourceforge.net/project/gnuwin32/bzip2/1.0.5/bzip2-1.0.5-bin.zip'
+BZIP_DEV='http://downloads.sourceforge.net/project/gnuwin32/bzip2/1.0.5/bzip2-1.0.5-lib.zip'
+ICNV_URI='http://www.xmlsoft.org/sources/win32/iconv-1.9.2.win32.zip'
+XML2_URI='http://www.xmlsoft.org/sources/win32/libxml2-2.7.8.win32.zip'
+GLUT_URI='http://files.transmissionzero.co.uk/software/development/GLUT/freeglut-MinGW-2.8.0-1.mp.zip'
+
+# Install locations
+GCC="mingw32-gcc"
+CLEAN="/usr/mingw32-clean"
+PKGS="/home/andy/src/aweather-win32/local/packages"
+DEV="/usr/mingw32-2.24"
+BIN="/home/andy/src/aweather-win32/local/gtk-2.24"
+
+# Create download dir, if needed
+mkdir -p $PKGS
+
+# Download packages
+wget -O "$PKGS/$(basename $GTK2_URI)" "$GTK2_URI"
+wget -O "$PKGS/$(basename $SOUP_BIN)" "$SOUP_BIN"
+wget -O "$PKGS/$(basename $SOUP_DEV)" "$SOUP_DEV"
+wget -O "$PKGS/$(basename $BZIP_BIN)" "$BZIP_BIN"
+wget -O "$PKGS/$(basename $BZIP_DEV)" "$BZIP_DEV"
+wget -O "$PKGS/$(basename $ICNV_URI)" "$ICNV_URI"
+wget -O "$PKGS/$(basename $XML2_URI)" "$XML2_URI"
+wget -O "$PKGS/$(basename $GLUT_URI)" "$GLUT_URI"
+
+# Setup dev folder
+rsync -a --delete "$CLEAN/" "$DEV/"
 
 # Extract packages
-extract -bdx $EXT/gtk+-bundle_2.24.8-20111122_win32.zip
-extract -bd  $EXT/iconv-1.9.2.win32.zip
-extract -bd  $EXT/libxml2-2.7.6.win32.zip
-extract -bx  $EXT/libsoup_2.26.3-1_win32.zip
-extract -dx  $EXT/libsoup-dev_2.26.3-1_win32.zip
-extract -bx  $EXT/bzip2-1.0.5-bin.zip
-extract -dx  $EXT/bzip2-1.0.5-lib.zip
-extract -dx  $EXT/freeglut-MinGW-2.8.0-1.mp.zip
+extract -bdx "$PKGS/$(basename $GTK2_URI)"
+extract -bdx "$PKGS/$(basename $SOUP_BIN)"
+extract -dx  "$PKGS/$(basename $SOUP_DEV)"
+extract -bdx "$PKGS/$(basename $BZIP_BIN)"
+extract -dx  "$PKGS/$(basename $BZIP_DEV)"
+extract -bd  "$PKGS/$(basename $ICNV_URI)"
+extract -bd  "$PKGS/$(basename $XML2_URI)"
+extract -dx  "$PKGS/$(basename $GLUT_URI)"
 
 # Cleanup install folders
 rm  -f $DEV/lib/*.la
@@ -58,19 +87,17 @@ find "$BIN/bin/" "$BIN/lib/" -type f \
 	-exec strip -s "{}" ";"
 find "$BIN" -type d -delete 2>/dev/null
 
+# Working xdg-open
+$GCC -Wall -mwindows -o $BIN/bin/xdg-open.exe xdg-open.c
+
 # Fix broken packages
 cp /usr/lib/pkgconfig/libxml-2.0.pc $DEV/lib/pkgconfig
 rename libxml2.dll libxml2-2.dll {$DEV,$BIN}/bin/*
 
-$MINGW-gcc -Wall -mwindows -o $BIN/bin/xdg-open.exe xdg-open.c
-cp gtkrc $BIN/etc/gtk-2.0/gtkrc
+# Custom settings
+mkdir -p $BIN/etc/{gtk-2.0,pango}
+cp gtkrc2        $BIN/etc/gtk-2.0/gtkrc
 cp pango.aliases $BIN/etc/pango/pango.aliases
 
 # Fix pkg-config
-sed -i 's!^prefix=.*!prefix=/usr/'$MINGW'/usr!' \
-	$DEV/lib/pkgconfig/*.pc
-
-# Install custom programs
-#   grits    - DESTDIR=/usr/$MINGW make install
-#   rsl      - DESTDIR=/usr/$MINGW make install
-#   aweather - DESTDIR=/usr/$MINGW make install
+sed -i "s!^prefix=.*!prefix=$DEV!" $DEV/lib/pkgconfig/*.pc

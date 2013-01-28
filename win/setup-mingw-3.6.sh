@@ -28,7 +28,7 @@ function extract {
 #   aweather - DESTDIR=/usr/$MINGW make install
 
 # Download locations
-GTK_URI='http://www.tarnyko.net/repo/GTK+-Bundle-3.6.1_(TARNYKO).exe'
+GTK3_URI='http://www.tarnyko.net/repo/GTK+-Bundle-3.6.1_(TARNYKO).exe'
 SOUP_BIN='http://ftp.gnome.org/pub/gnome/binaries/win32/libsoup/2.26/libsoup_2.26.3-1_win32.zip'
 SOUP_DEV='http://ftp.gnome.org/pub/gnome/binaries/win32/libsoup/2.26/libsoup-dev_2.26.3-1_win32.zip'
 BZIP_BIN='http://downloads.sourceforge.net/project/gnuwin32/bzip2/1.0.5/bzip2-1.0.5-bin.zip'
@@ -36,35 +36,37 @@ BZIP_DEV='http://downloads.sourceforge.net/project/gnuwin32/bzip2/1.0.5/bzip2-1.
 
 # Install locations
 GCC="mingw32-gcc"
-DEV="/usr/mingw32"
 CLEAN="/usr/mingw32-clean"
-BIN="/home/andy/src/aweather-win32/local/gtk-3.6.1"
-EXT="/home/andy/src/aweather-win32/local/packages"
-GTK="/home/andy/.wine/drive_c/Program Files (x86)/GTK+-Bundle-3.6.1"
+PKGS="/home/andy/src/aweather-win32/local/packages"
+WINE="/home/andy/.wine/drive_c/Program Files (x86)/GTK+-Bundle-3.6.1"
+DEV="/usr/mingw32-3.6"
+BIN="/home/andy/src/aweather-win32/local/gtk-3.6"
 
 # Create download dir, if needed
-mkdir -p $EXT
+mkdir -p $PKGS
 
 # Download packages
-wget -O "$EXT/$(basename  $GTK_URI)" "$GTK_URI"
-wget -O "$EXT/$(basename $SOUP_BIN)" "$SOUP_BIN"
-wget -O "$EXT/$(basename $SOUP_DEV)" "$SOUP_DEV"
-wget -O "$EXT/$(basename $BZIP_BIN)" "$BZIP_BIN"
-wget -O "$EXT/$(basename $BZIP_DEV)" "$BZIP_DEV"
+wget -O "$PKGS/$(basename $GTK3_URI)" "$GTK3_URI"
+wget -O "$PKGS/$(basename $SOUP_BIN)" "$SOUP_BIN"
+wget -O "$PKGS/$(basename $SOUP_DEV)" "$SOUP_DEV"
+wget -O "$PKGS/$(basename $BZIP_BIN)" "$BZIP_BIN"
+wget -O "$PKGS/$(basename $BZIP_DEV)" "$BZIP_DEV"
+
+# Setup dev folder
+rsync -a --delete "$CLEAN/" "$DEV/"
 
 # Install GTK Bundle
 wine extern/gtk-3.6.1-dev.exe
 
-# Setup dev folder
-rsync -a --delete "$CLEAN/" "$DEV/"
-rsync -a          "$GTK/"   "$DEV/"
-rsync -a --delete "$GTK/"   "$BIN/"
+# Copy GTK Bundle
+rsync -a          "$WINE/"   "$DEV/"
+rsync -a --delete "$WINE/"   "$BIN/"
 
 # Extract packages
-extract -bdx "$EXT/$(basename $SOUP_BIN)"
-extract -dx  "$EXT/$(basename $SOUP_DEV)"
-extract -bdx "$EXT/$(basename $BZIP_BIN)"
-extract -dx  "$EXT/$(basename $BZIP_DEV)"
+extract -bdx "$PKGS/$(basename $SOUP_BIN)"
+extract -dx  "$PKGS/$(basename $SOUP_DEV)"
+extract -bdx "$PKGS/$(basename $BZIP_BIN)"
+extract -dx  "$PKGS/$(basename $BZIP_DEV)"
 
 # Cleanup install folders
 rm  -f $DEV/lib/*.la

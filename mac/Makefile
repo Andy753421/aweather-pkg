@@ -30,7 +30,7 @@ $(DESTDIR): $(MAC_AWEATHER)/src/aweather \
 	make -C $(MAC_RSL)      install
 	find $(DESTDIR) -name '*.a'  -delete
 	find $(DESTDIR) -name '*.la' -delete
-	rm -rf $(DESTDIR)/share/rsl/colors
+	rm -rf $(DESTDIR)/share/rsl1/colors
 	rm -rf $(DESTDIR)/include
 	touch $@
 

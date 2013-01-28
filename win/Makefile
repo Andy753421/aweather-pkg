@@ -31,9 +31,9 @@ $(INSTALLERS): $(DESTDIR)
 aweather-gen:
 	cd $(WIN_AWEATHER); \
 	PKG_CONFIG_PATH="$(WIN_GRITS)/src" \
-	CPPFLAGS="-I$(WIN_GRITS)/include/grits" \
-	LIBS="-L$(WIN_GRITS)/src/.libs" \
-	CFLAGS="-g -Werror -Wno-unused -O3" \
+	LDFLAGS="-L$(WIN_GRITS)/src/.libs -L$(WIN_RSL)/src/.libs" \
+	CPPFLAGS="-I$(WIN_GRITS)/include/grits -I$(WIN_RSL)/src" \
+	CFLAGS="-g -Wno-unused -O3" \
 	./autogen.sh \
 		--enable-relative \
 		--enable-shared \
