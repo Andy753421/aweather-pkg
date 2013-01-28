@@ -1,16 +1,16 @@
-FILES        = /scratch/aweather-pkg/files
+FILES        = /home/andy/src/aweather-pkg/files
 
-VER_AWEATHER = 0.7
-VER_GRITS    = 0.7
+VER_AWEATHER = 0.8
+VER_GRITS    = 0.8
 VER_RSL      = 1.42
 
-SRC_AWEATHER = /scratch/aweather
-SRC_GRITS    = /scratch/grits
-SRC_RSL      = /scratch/rsl
+SRC_AWEATHER = /home/andy/src/aweather
+SRC_GRITS    = /home/andy/src/grits
+SRC_RSL      = /home/andy/src/rsl
 
-WIN_AWEATHER = /scratch/aweather-win32
-WIN_GRITS    = /scratch/grits-win32
-WIN_RSL      = /scratch/rsl-win32
+WIN_AWEATHER = /home/andy/src/aweather-win32
+WIN_GRITS    = /home/andy/src/grits-win32
+WIN_RSL      = /home/andy/src/rsl-win32
 
 MAC_HOST     = d
 MAC_AWEATHER = /Users/andy/src/aweather
